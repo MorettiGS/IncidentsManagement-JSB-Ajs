@@ -1,0 +1,39 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:16
+    container_name: incidents_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: incidents_db
+      POSTGRES_USER: incidents_user
+      POSTGRES_PASSWORD: incidents_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U incidents_user -d incidents_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: incidents_api
+    restart: unless-stopped
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/incidents_db
+      SPRING_DATASOURCE_USERNAME: incidents_user
+      SPRING_DATASOURCE_PASSWORD: incidents_pass
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+
+volumes:
+  db_data:
