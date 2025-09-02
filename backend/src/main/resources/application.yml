@@ -13,6 +13,8 @@ spring:
   flyway:
     locations: classpath:db/migration
     baseline-on-migrate: true
-
+  jwt:
+    secret: # secret key
+    expiration: 86400000 # 24 hours
 server:
   port: 8080
