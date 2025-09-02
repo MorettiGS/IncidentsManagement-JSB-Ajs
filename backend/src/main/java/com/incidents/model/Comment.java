@@ -31,4 +31,56 @@ public class Comment {
     private LocalDateTime dataCriacao;
 
     public Comment() {}
+
+	public Comment(UUID id,
+                   Incident incident,
+                   String autor,
+                   String mensagem,
+                   LocalDateTime dataCriacao) {
+        this.id = id;
+        this.incident = incident;
+        this.autor = autor;
+        this.mensagem = mensagem;
+        this.dataCriacao = dataCriacao;
+    }
+
+	public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public Incident getIncident() {
+        return incident;
+    }
+
+    public void setIncident(Incident incident) {
+        this.incident = incident;
+    }
+
+    public String getAutor() {
+        return autor;
+    }
+
+    public void setAutor(String autor) {
+        this.autor = autor;
+    }
+
+    public String getMensagem() {
+        return mensagem;
+    }
+
+    public void setMensagem(String mensagem) {
+        this.mensagem = mensagem;
+    }
+
+    public LocalDateTime getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public void setDataCriacao(LocalDateTime dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
 }
