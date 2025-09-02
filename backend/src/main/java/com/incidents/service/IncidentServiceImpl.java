@@ -11,6 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,19 +27,26 @@ public class IncidentServiceImpl implements IncidentService {
     }
     
     @Override
+    @Cacheable(value = "incidents", key = "{#status, #prioridade, #search, #pageable.pageNumber, #pageable.pageSize, #pageable.sort}")
     public Page<Incident> getIncidents(String status, String prioridade, String search, Pageable pageable) {
         Specification<Incident> spec = QueryBuilder.buildIncidentFilter(status, prioridade, search);
         return incidentRepository.findAll(spec, pageable);
     }
     
-	@Override
-	public Incident getIncident(UUID id) {
-		return incidentRepository.findById(id)
-    		.orElseThrow(() -> new ResourceNotFoundException("Incident not found with id: " + id));
-	}   
+    @Override
+    @Cacheable(value = "incidentById", key = "#id")
+    public Incident getIncident(UUID id) {
+        return incidentRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Incident not found with id: " + id));
+    }   
  
     @Override
     @Transactional
+    @Caching(evict = {
+        @CacheEvict(value = "incidents", allEntries = true),
+        @CacheEvict(value = "incidentById", key = "#result.id"),
+        @CacheEvict(value = "stats", allEntries = true)
+    })
     public Incident createIncident(Incident incident) {
         incident.setTags(IncidentUtils.normalizeTags(incident.getTags()));
         
@@ -48,6 +58,11 @@ public class IncidentServiceImpl implements IncidentService {
     
     @Override
     @Transactional
+    @Caching(evict = {
+        @CacheEvict(value = "incidents", allEntries = true),
+        @CacheEvict(value = "incidentById", key = "#id"),
+        @CacheEvict(value = "stats", allEntries = true)
+    })
     public Incident updateIncident(UUID id, Incident incidentDetails) {
         Incident incident = getIncident(id);
         
@@ -65,6 +80,12 @@ public class IncidentServiceImpl implements IncidentService {
     
     @Override
     @Transactional
+    @Caching(evict = {
+        @CacheEvict(value = "incidents", allEntries = true),
+        @CacheEvict(value = "incidentById", key = "#id"),
+        @CacheEvict(value = "commentsByIncident", key = "#id"),
+        @CacheEvict(value = "stats", allEntries = true)
+    })
     public void deleteIncident(UUID id) {
         Incident incident = getIncident(id);
         incidentRepository.delete(incident);
@@ -72,6 +93,11 @@ public class IncidentServiceImpl implements IncidentService {
     
     @Override
     @Transactional
+    @Caching(evict = {
+        @CacheEvict(value = "incidents", allEntries = true),
+        @CacheEvict(value = "incidentById", key = "#id"),
+        @CacheEvict(value = "stats", allEntries = true)
+    })
     public Incident updateStatus(UUID id, Status status) {
         Incident incident = getIncident(id);
         incident.setStatus(status);
@@ -80,11 +106,13 @@ public class IncidentServiceImpl implements IncidentService {
     }
     
     @Override
+    @Cacheable(value = "stats")
     public List<Object[]> getStatsByStatus() {
         return incidentRepository.countByStatus();
     }
     
     @Override
+    @Cacheable(value = "stats")
     public List<Object[]> getStatsByPrioridade() {
         return incidentRepository.countByPrioridade();
     }
