@@ -5,15 +5,15 @@ services:
     container_name: incidents_db
     restart: unless-stopped
     environment:
-      POSTGRES_DB: incidents_db
-      POSTGRES_USER: incidents_user
-      POSTGRES_PASSWORD: incidents_pass
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U incidents_user -d incidents_db"]
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -25,15 +25,18 @@ services:
     container_name: incidents_api
     restart: unless-stopped
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/incidents_db
-      SPRING_DATASOURCE_USERNAME: incidents_user
-      SPRING_DATASOURCE_PASSWORD: incidents_pass
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${POSTGRES_DB}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
       SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRATION: ${JWT_EXPIRATION}
+      SERVER_PORT: ${SERVER_PORT}
     depends_on:
       db:
         condition: service_healthy
     ports:
-      - "8080:8080"
+      - "${SERVER_PORT}:${SERVER_PORT}"
 
 volumes:
   db_data:
