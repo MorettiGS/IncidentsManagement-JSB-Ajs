@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/incidents_db
-    username: incidents_user
-    password: incidents_pass
+    url: jdbc:postgresql://localhost:5432/${POSTGRES_DB:incidents_db}
+    username: ${POSTGRES_USER:incidents_user}
+    password: ${POSTGRES_PASSWORD:incidents_pass}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -13,9 +13,18 @@ spring:
   flyway:
     locations: classpath:db/migration
     baseline-on-migrate: true
-  jwt:
-    secret: # secret key
-    expiration: 86400000 # 24 hours
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=10000,expireAfterWrite=60s
+
+server:
+  port: ${SERVER_PORT:8080}
+
+jwt:
+  secret: ${JWT_SECRET:default-insecure-secret-key}
+  expiration: ${JWT_EXPIRATION:86400000}
+
 springdoc:
   api-docs:
     path: /v3/api-docs
@@ -23,5 +32,8 @@ springdoc:
     path: /swagger-ui.html
     tags-sorter: alpha
     operations-sorter: alpha
-server:
-  port: 8080
+
+logging:
+  level:
+    com.incidents: DEBUG
+    org.springframework.security: INFO
