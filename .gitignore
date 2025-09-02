@@ -1,0 +1,12 @@
+.env
+.DS_Store
+
+backend/target/
+backend/.vscode/
+backend/.idea/
+backend/*.iml
+backend/*.class
+
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
