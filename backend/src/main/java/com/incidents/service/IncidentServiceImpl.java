@@ -5,6 +5,7 @@ import com.incidents.model.Status;
 import com.incidents.repository.IncidentRepository;
 import com.incidents.util.IncidentUtils;
 import com.incidents.util.QueryBuilder;
+import com.incidents.exception.ResourceNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
