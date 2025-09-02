@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 import java.util.UUID;
@@ -39,7 +40,7 @@ class IncidentServiceTest {
         );
         Page<Incident> expectedPage = new PageImpl<>(incidents, pageable, incidents.size());
         
-        when(incidentRepository.findAll(any(), any(Pageable.class))).thenReturn(expectedPage);
+        when(incidentRepository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(expectedPage);
         
         Page<Incident> result = incidentService.getIncidents(null, null, null, pageable);
         
