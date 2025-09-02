@@ -28,12 +28,12 @@ public class IncidentServiceImpl implements IncidentService {
         return incidentRepository.findAll(spec, pageable);
     }
     
-    @Override
-    public Incident getIncident(UUID id) {
-        return incidentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Incident not found with id: " + id));
-    }
-    
+	@Override
+	public Incident getIncident(UUID id) {
+		return incidentRepository.findById(id)
+    		.orElseThrow(() -> new ResourceNotFoundException("Incident not found with id: " + id));
+	}   
+ 
     @Override
     @Transactional
     public Incident createIncident(Incident incident) {
