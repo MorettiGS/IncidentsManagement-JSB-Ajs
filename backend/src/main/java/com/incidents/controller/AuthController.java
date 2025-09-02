@@ -66,7 +66,51 @@ public class AuthController {
         
         return ResponseEntity.ok("User registered successfully");
     }
+
+	@PostMapping("/register")
+	public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest registerRequest) {
+    	log.info("Registration attempt for email: {}", registerRequest.getEmail());
+    	
+    	if (userRepository.existsByEmail(registerRequest.getEmail())) {
+    	    log.warn("Registration failed: Email already exists - {}", registerRequest.getEmail());
+    	    return ResponseEntity
+    	            .status(HttpStatus.CONFLICT)
+    	            .body(new ErrorResponse("Email already exists"));
+    	}
+    	
+    	if (!isValidPassword(registerRequest.getPassword())) {
+    	    log.warn("Registration failed: Password does not meet requirements");
+    	    return ResponseEntity
+    	            .status(HttpStatus.BAD_REQUEST)
+    	            .body(new ErrorResponse("Password must be at least 8 characters long and contain at least one number, one uppercase letter, and one special character"));
+    	}
+    	
+    	try {
+    	    User user = new User();
+    	    user.setEmail(registerRequest.getEmail());
+    	    user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+    	    user.setName(registerRequest.getName());
+    	    user.setRoles(Set.of(Role.ROLE_READ)); // Default role for new users
+    	    
+    	    userRepository.save(user);
+    	    
+    	    log.info("User registered successfully: {}", registerRequest.getEmail());
+    	    
+    	    return ResponseEntity.ok(new MessageResponse("User registered successfully"));
+    	} catch (Exception e) {
+    	    log.error("Registration error: {}", e.getMessage(), e);
+        	return ResponseEntity
+        	        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        	        .body(new ErrorResponse("An error occurred during registration"));
+    	}
+	}
     
+	private boolean isValidPassword(String password) {
+    	// At least 8 characters, one number, one uppercase, one special character
+    	String pattern = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$";
+    	return password != null && password.matches(pattern);
+	}
+
     public static class LoginRequest {
         private String email;
         private String password;
@@ -100,4 +144,28 @@ public class AuthController {
         public String getName() { return name; }
         public void setName(String name) { this.name = name; }
     }
+
+	public static class ErrorResponse {
+    	private String message;
+    
+    	public ErrorResponse(String message) {
+    	    this.message = message;
+    	}
+    
+    	public String getMessage() {
+    	    return message;
+    	}
+	}
+
+	public static class MessageResponse {
+    	private String message;
+    
+    	public MessageResponse(String message) {
+    	    this.message = message;
+    	}
+    
+    	public String getMessage() {
+    	    return message;
+    	}
+	}
 }
