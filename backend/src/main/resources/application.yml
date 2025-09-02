@@ -16,5 +16,12 @@ spring:
   jwt:
     secret: # secret key
     expiration: 86400000 # 24 hours
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
 server:
   port: 8080
