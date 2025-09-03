@@ -11,7 +11,7 @@ public class IncidentsApplication {
 
     public static void main(String[] args) {
         Dotenv dotenv = Dotenv.configure()
-                .directory("./")
+                .directory("../")
                 .ignoreIfMalformed()
                 .ignoreIfMissing()
                 .load();
