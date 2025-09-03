@@ -4,7 +4,7 @@ INSERT INTO app_user (id, email, password, name, created_at, active) VALUES
 ('33333333-3333-3333-3333-333333333333', 'alice.smith@email.com', '$2a$10$rL.8Xp/6jYd.6U1sWZzXX.FO6k7Jd6V6q6k6Z6Z6Z6Z6Z6Z6Z6Z6Z', 'Alice Smith', NOW(), true),
 ('44444444-4444-4444-4444-444444444444', 'bob.johnson@email.com', '$2a$10$rL.8Xp/6jYd.6U1sWZzXX.FO6k7Jd6V6q6k6Z6Z6Z6Z6Z6Z6Z6Z6Z', 'Bob Johnson', NOW(), true);
 
-INSERT INTO user_roles (user_id, role) VALUES
+INSERT INTO user_roles (user_id, roles) VALUES
 ('11111111-1111-1111-1111-111111111111', 'ROLE_ADMIN'),
 ('22222222-2222-2222-2222-222222222222', 'ROLE_READ'),
 ('22222222-2222-2222-2222-222222222222', 'ROLE_WRITE'),

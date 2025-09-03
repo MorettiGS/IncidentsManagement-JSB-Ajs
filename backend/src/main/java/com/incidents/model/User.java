@@ -27,8 +27,9 @@ public class User {
     private String name;
     
     @ElementCollection(fetch = FetchType.EAGER)
-    @Enumerated(EnumType.STRING)
-    private Set<Role> roles;
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "roles")
+    private Set<String> roles;
     
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -37,7 +38,7 @@ public class User {
     
     public User() {}
     
-    public User(String email, String password, String name, Set<Role> roles) {
+    public User(String email, String password, String name, Set<String> roles) {
         this.email = email;
         this.password = password;
         this.name = name;
@@ -56,8 +57,8 @@ public class User {
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
     
-    public Set<Role> getRoles() { return roles; }
-    public void setRoles(Set<Role> roles) { this.roles = roles; }
+    public Set<String> getRoles() { return roles; }
+    public void setRoles(Set<String> roles) { this.roles = roles; }
     
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }

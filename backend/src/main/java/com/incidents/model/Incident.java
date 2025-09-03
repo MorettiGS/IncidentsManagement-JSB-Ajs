@@ -1,5 +1,9 @@
 package com.incidents.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -55,7 +59,7 @@ public class Incident {
                     Prioridade prioridade,
                     Status status,
                     String responsavelEmail,
-                    List<String> tags,
+                    String tags,
                     LocalDateTime dataAbertura,
                     LocalDateTime dataAtualizacao) {
         this.id = id;

@@ -32,12 +32,12 @@ public class Comment {
     public Comment() {}
 
 	public Comment(UUID id,
-                   Incident incident,
+                   UUID incidentId,
                    String autor,
                    String mensagem,
                    LocalDateTime dataCriacao) {
         this.id = id;
-        this.incident = incident;
+        this.incidentId = incidentId;
         this.autor = autor;
         this.mensagem = mensagem;
         this.dataCriacao = dataCriacao;

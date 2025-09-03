@@ -9,8 +9,8 @@ CREATE TABLE IF NOT EXISTS app_user (
 
 CREATE TABLE IF NOT EXISTS user_roles (
     user_id UUID NOT NULL,
-    role VARCHAR(50) NOT NULL,
-    PRIMARY KEY (user_id, role),
+    roles VARCHAR(50) NOT NULL,
+    PRIMARY KEY (user_id, roles),
     FOREIGN KEY (user_id) REFERENCES app_user(id) ON DELETE CASCADE
 );
 

@@ -78,7 +78,7 @@ public class AuthController {
             user.setEmail(registerRequest.getEmail());
             user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
             user.setName(registerRequest.getName());
-            user.setRoles(Set.of(Role.ROLE_READ)); // Default roles
+            user.setRoles(Set.of(Role.ROLE_READ.name())); // Default roles
             
             userRepository.save(user);
             

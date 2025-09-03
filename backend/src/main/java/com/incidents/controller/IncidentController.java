@@ -1,5 +1,6 @@
 package com.incidents.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import com.incidents.model.Incident;
 import com.incidents.model.Status;
 import com.incidents.service.IncidentService;
