@@ -21,6 +21,7 @@ public class IncidentController {
     }
 
     @GetMapping
+    @Operation(summary = "Get paginated incidents with filters")
     public ResponseEntity<Page<Incident>> getIncidents(
             @RequestParam(required = false) String status,
             @RequestParam(required = false) String prioridade,
@@ -30,31 +31,37 @@ public class IncidentController {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get incident by ID")
     public ResponseEntity<Incident> getIncident(@PathVariable UUID id) {
         return ResponseEntity.ok(incidentService.getIncident(id));
     }
 
     @PostMapping
+    @Operation(summary = "Create a new incident")
     public ResponseEntity<Incident> createIncident(@RequestBody Incident incident) {
         return ResponseEntity.ok(incidentService.createIncident(incident));
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Update an existing incident")
     public ResponseEntity<Incident> updateIncident(@PathVariable UUID id, @RequestBody Incident incident) {
         return ResponseEntity.ok(incidentService.updateIncident(id, incident));
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete an incident")
     public ResponseEntity<Void> deleteIncident(@PathVariable UUID id) {
         incidentService.deleteIncident(id);
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/{id}/status")
+    @Operation(summary = "Update incident status")
     public ResponseEntity<Incident> updateStatus(@PathVariable UUID id, @RequestBody StatusUpdateRequest request) {
         return ResponseEntity.ok(incidentService.updateStatus(id, request.getStatus()));
     }
 
+    // DTO
     public static class StatusUpdateRequest {
         private Status status;
 

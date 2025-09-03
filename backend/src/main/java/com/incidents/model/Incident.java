@@ -35,8 +35,11 @@ public class Incident {
     @NotBlank
     private String responsavelEmail;
 
-    @ElementCollection
-    private List<String> tags;
+    @Column(columnDefinition = "TEXT")
+    private String tags;
+
+    @Transient
+    private List<String> tagsList;
 
     @CreationTimestamp
     private LocalDateTime dataAbertura;
@@ -114,12 +117,40 @@ public class Incident {
         this.responsavelEmail = responsavelEmail;
     }
 
-    public List<String> getTags() {
+    public String getTags() {
         return tags;
     }
 
-    public void setTags(List<String> tags) {
+    public void setTags(String tags) {
         this.tags = tags;
+    }
+
+    @JsonProperty("tags")
+    public List<String> getTagsList() {
+        if (tagsList == null && tags != null) {
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                tagsList = mapper.readValue(tags, new TypeReference<List<String>>() {});
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException("Error parsing tags JSON", e);
+            }
+        }
+        return tagsList;
+    }
+
+    @JsonProperty("tags")
+    public void setTagsList(List<String> tagsList) {
+        this.tagsList = tagsList;
+        if (tagsList != null) {
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                this.tags = mapper.writeValueAsString(tagsList);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException("Error converting tags to JSON", e);
+            }
+        } else {
+            this.tags = null;
+        }
     }
 
     public LocalDateTime getDataAbertura() {
