@@ -48,7 +48,7 @@ public class IncidentServiceImpl implements IncidentService {
         @CacheEvict(value = "stats", allEntries = true)
     })
     public Incident createIncident(Incident incident) {
-        incident.setTags(IncidentUtils.normalizeTags(incident.getTags()));
+        incident.setTags(IncidentUtils.normalizeTagsToJson(incident.getTagsList()));
         
         incident.setDataAbertura(java.time.LocalDateTime.now());
         incident.setDataAtualizacao(java.time.LocalDateTime.now());
@@ -72,7 +72,7 @@ public class IncidentServiceImpl implements IncidentService {
         incident.setStatus(incidentDetails.getStatus());
         incident.setResponsavelEmail(incidentDetails.getResponsavelEmail());
         
-        incident.setTags(IncidentUtils.normalizeTags(incidentDetails.getTags()));
+        incident.setTags(IncidentUtils.normalizeTagsToJson(incidentDetails.getTagsList()));
         IncidentUtils.touchUpdate(incident);
         
         return incidentRepository.save(incident);

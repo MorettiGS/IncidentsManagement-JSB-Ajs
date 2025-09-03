@@ -15,9 +15,8 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "incident_id", nullable = false)
-    private Incident incident;
+    @Column(name = "incident_id", nullable = false)
+    private UUID incidentId;
 
     @NotBlank
     @Size(max = 120)
@@ -52,12 +51,12 @@ public class Comment {
         this.id = id;
     }
 
-    public Incident getIncident() {
-        return incident;
+    public UUID getIncidentId() {
+        return incidentId;
     }
-
-    public void setIncident(Incident incident) {
-        this.incident = incident;
+    
+    public void setIncidentId(UUID incidentId) {
+        this.incidentId = incidentId;
     }
 
     public String getAutor() {
