@@ -11,6 +11,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
@@ -26,6 +28,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
+    MatChipsModule,
+    MatProgressSpinnerModule,
     MatTooltipModule
   ]
 })

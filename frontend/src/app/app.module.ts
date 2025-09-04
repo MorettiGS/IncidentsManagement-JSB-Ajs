@@ -21,13 +21,6 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
-    RegisterComponent,
-    IncidentListComponent,
-    IncidentDetailComponent,
-    IncidentFormComponent,
-    CommentListComponent,
-    CommentFormComponent
   ],
   imports: [
     BrowserModule,
