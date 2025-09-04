@@ -34,7 +34,17 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authz -> authz
+                // Public endpoints
                 .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/swagger-ui/**").permitAll()
+                .requestMatchers("/v3/api-docs/**").permitAll()
+                .requestMatchers("/swagger-ui.html").permitAll()
+                .requestMatchers("/swagger-resources/**").permitAll()
+                
+                // Protected endpoints
+                .requestMatchers("/api/incidents/**").hasAnyAuthority("ROLE_READ", "ROLE_WRITE", "ROLE_ADMIN")
+                .requestMatchers("/api/comments/**").hasAnyAuthority("ROLE_READ", "ROLE_WRITE", "ROLE_ADMIN")
+                .requestMatchers("/api/stats/**").hasAnyAuthority("ROLE_READ", "ROLE_WRITE", "ROLE_ADMIN")
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
