@@ -1,0 +1,76 @@
+<div class="container" *ngIf="!loading">
+  <div class="header">
+    <button mat-icon-button routerLink="/incidents">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1>Detalhes da Ocorrência</h1>
+    <div>
+      <button mat-icon-button color="accent" [routerLink]="['/incidents', incident?.id, 'edit']">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="deleteIncident()">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <mat-card *ngIf="incident">
+    <mat-card-header>
+      <mat-card-title>{{ incident.titulo }}</mat-card-title>
+      <mat-card-subtitle>
+        <span [class]="'priority-badge ' + incident.prioridade.toLowerCase()">
+          {{ incident.prioridade }}
+        </span>
+        <span [class]="'status-badge ' + incident.status.toLowerCase()">
+          {{ incident.status }}
+        </span>
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="incident-details">
+        <div class="detail-item">
+          <strong>Descrição:</strong>
+          <p>{{ incident.descricao || 'Nenhuma descrição fornecida' }}</p>
+        </div>
+        <div class="detail-item">
+          <strong>Responsável:</strong>
+          <p>{{ incident.responsavelEmail }}</p>
+        </div>
+        <div class="detail-item">
+          <strong>Data de Abertura:</strong>
+          <p>{{ incident.dataAbertura | date:'dd/MM/yyyy HH:mm' }}</p>
+        </div>
+        <div class="detail-item">
+          <strong>Última Atualização:</strong>
+          <p>{{ incident.dataAtualizacao | date:'dd/MM/yyyy HH:mm' }}</p>
+        </div>
+        <div class="detail-item" *ngIf="incident.tags && incident.tags.length > 0">
+          <strong>Tags:</strong>
+          <div class="tags">
+            <mat-chip-set>
+              <mat-chip *ngFor="let tag of incident.tags">{{ tag }}</mat-chip>
+            </mat-chip-set>
+          </div>
+        </div>
+      </div>
+
+      <div class="status-update">
+        <h3>Alterar Status</h3>
+        <div class="status-buttons">
+          <button mat-raised-button 
+                  *ngFor="let status of ['ABERTA', 'EM_ANDAMENTO', 'RESOLVIDA', 'CANCELADA']" 
+                  [color]="incident.status === status ? 'primary' : ''"
+                  (click)="updateStatus(status)">
+            {{ status }}
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <app-comment-list [comments]="comments" [incidentId]="incident?.id"></app-comment-list>
+</div>
+
+<div class="loading-spinner" *ngIf="loading">
+  <mat-spinner></mat-spinner>
+</div>
