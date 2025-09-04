@@ -1,0 +1,12 @@
+<mat-toolbar color="primary">
+  <span>Gestão de Ocorrências</span>
+  <span class="spacer"></span>
+  <button mat-button *ngIf="!authService.isAuthenticated()" routerLink="/login">Login</button>
+  <button mat-button *ngIf="!authService.isAuthenticated()" routerLink="/register">Registrar</button>
+  <button mat-button *ngIf="authService.isAuthenticated()" routerLink="/incidents">Ocorrências</button>
+  <button mat-button *ngIf="authService.isAuthenticated()" (click)="logout()">Logout</button>
+</mat-toolbar>
+
+<main>
+  <router-outlet></router-outlet>
+</main>
