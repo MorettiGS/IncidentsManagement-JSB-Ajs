@@ -1,0 +1,67 @@
+<div class="container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{ isEditMode ? 'Editar' : 'Nova' }} Ocorrência</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="incidentForm" (ngSubmit)="onSubmit()">
+        <div class="form-grid">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Título</mat-label>
+            <input matInput formControlName="titulo" required>
+            <mat-error *ngIf="titulo?.hasError('required')">Título é obrigatório</mat-error>
+            <mat-error *ngIf="titulo?.hasError('minlength')">Título deve ter pelo menos 5 caracteres</mat-error>
+            <mat-error *ngIf="titulo?.hasError('maxlength')">Título deve ter no máximo 120 caracteres</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Descrição</mat-label>
+            <textarea matInput formControlName="descricao" rows="4"></textarea>
+            <mat-hint align="end">{{ descricao?.value?.length || 0 }}/5000</mat-hint>
+            <mat-error *ngIf="descricao?.hasError('maxlength')">Descrição deve ter no máximo 5000 caracteres</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Prioridade</mat-label>
+            <mat-select formControlName="prioridade" required>
+              <mat-option *ngFor="let priority of priorities" [value]="priority.value">
+                {{ priority.label }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="prioridade?.hasError('required')">Prioridade é obrigatória</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Status</mat-label>
+            <mat-select formControlName="status" required>
+              <mat-option *ngFor="let status of statuses" [value]="status.value">
+                {{ status.label }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="status?.hasError('required')">Status é obrigatório</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Email do Responsável</mat-label>
+            <input matInput formControlName="responsavelEmail" type="email" required>
+            <mat-error *ngIf="responsavelEmail?.hasError('required')">Email é obrigatório</mat-error>
+            <mat-error *ngIf="responsavelEmail?.hasError('email')">Email deve ser válido</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Tags</mat-label>
+            <input matInput formControlName="tags" placeholder="Separadas por vírgula">
+            <mat-hint>Separe as tags com vírgulas</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <div class="form-actions">
+          <button mat-button type="button" routerLink="/incidents">Cancelar</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="!incidentForm.valid">
+            {{ isEditMode ? 'Atualizar' : 'Criar' }}
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
