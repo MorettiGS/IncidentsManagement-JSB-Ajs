@@ -1,0 +1,28 @@
+.login-card{
+  max-width: 420px;
+  margin: 48px auto;
+  padding: 24px;
+}
+
+.full{
+  width: 100%;
+}
+
+.actions{
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.link{
+  text-decoration:none;
+  margin-left: 12px;
+  align-self: center;
+}
+
+.error{
+  color: #c62828;
+  margin-top: 8px;
+  font-size: 0.95rem;
+}

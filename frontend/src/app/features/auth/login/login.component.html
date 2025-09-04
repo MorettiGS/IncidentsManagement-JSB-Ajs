@@ -1,0 +1,25 @@
+<mat-card class="login-card">
+  <h2>Login</h2>
+
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill" class="full">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" placeholder="you@example.com" />
+      <mat-error *ngIf="loginForm.get('email')?.hasError('required')">Email é obrigatório</mat-error>
+      <mat-error *ngIf="loginForm.get('email')?.hasError('email')">Insira um email válido</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full">
+      <mat-label>Senha</mat-label>
+      <input matInput type="password" formControlName="password" />
+      <mat-error *ngIf="loginForm.get('password')?.hasError('required')">Senha é obrigatória</mat-error>
+    </mat-form-field>
+
+    <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+    <div class="actions">
+      <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">Login</button>
+      <a routerLink="/auth/register" class="link">Cadastro</a>
+    </div>
+  </form>
+</mat-card>

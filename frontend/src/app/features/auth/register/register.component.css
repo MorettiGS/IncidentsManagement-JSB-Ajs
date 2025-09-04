@@ -1,0 +1,30 @@
+.register-card{
+  max-width: 520px;
+  margin: 36px auto;
+  padding: 24px;
+}
+
+.full{
+  width:100%;
+}
+
+.actions{
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.link{
+  text-decoration:none;
+}
+
+.error{
+  color:#c62828;
+  margin-top:8px;
+}
+
+.success{
+  color:#2e7d32;
+  margin-top:8px;
+}
