@@ -62,12 +62,15 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "incidents-frontend:build"
+          },
           "configurations": {
             "production": {
-              "buildTarget": "incidents-frontend:build:production"
+              "browserTarget": "incidents-frontend:build:production"
             },
             "development": {
-              "buildTarget": "incidents-frontend:build:development"
+              "browserTarget": "incidents-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -75,7 +78,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "incidents-frontend:build"
+            "browserTarget": "incidents-frontend:build"
           }
         },
         "test": {
@@ -93,19 +96,6 @@
               "src/styles.css"
             ],
             "scripts": []
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "tsconfig.app.json",
-              "tsconfig.spec.json",
-              "e2e/tsconfig.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
           }
         }
       }
