@@ -1,0 +1,21 @@
+<mat-card class="comments-section" *ngIf="incidentId">
+  <mat-card-header>
+    <mat-card-title>Comentários</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <app-comment-form [incidentId]="incidentId"></app-comment-form>
+
+    <div class="comments-list">
+      <div class="comment" *ngFor="let comment of comments">
+        <div class="comment-header">
+          <strong>{{ comment.autor }}</strong>
+          <span>{{ comment.dataCriacao | date:'dd/MM/yyyy HH:mm' }}</span>
+        </div>
+        <p>{{ comment.mensagem }}</p>
+      </div>
+      <div class="no-comments" *ngIf="comments.length === 0">
+        Nenhum comentário ainda.
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
