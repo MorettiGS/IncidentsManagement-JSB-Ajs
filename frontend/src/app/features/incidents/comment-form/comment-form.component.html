@@ -1,0 +1,21 @@
+<form [formGroup]="commentForm" (ngSubmit)="onSubmit()" class="comment-form">
+  <h3>Adicionar Comentário</h3>
+  <div class="form-fields">
+    <mat-form-field appearance="outline">
+      <mat-label>Autor</mat-label>
+      <input matInput formControlName="autor" required>
+      <mat-error *ngIf="commentForm.get('autor')?.hasError('required')">Autor é obrigatório</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Mensagem</mat-label>
+      <textarea matInput formControlName="mensagem" rows="3" required></textarea>
+      <mat-hint align="end">{{ commentForm.get('mensagem')?.value?.length || 0 }}/2000</mat-hint>
+      <mat-error *ngIf="commentForm.get('mensagem')?.hasError('required')">Mensagem é obrigatória</mat-error>
+      <mat-error *ngIf="commentForm.get('mensagem')?.hasError('maxlength')">Mensagem deve ter no máximo 2000 caracteres</mat-error>
+    </mat-form-field>
+  </div>
+  <button mat-raised-button color="primary" type="submit" [disabled]="!commentForm.valid">
+    Adicionar Comentário
+  </button>
+</form>
