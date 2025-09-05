@@ -9,11 +9,6 @@
     <button mat-button routerLink="/incidents" routerLinkActive="active">Incidentes</button>
     <button mat-button routerLink="/stats" routerLinkActive="active">Estatísticas</button>
 
-    <button mat-stroked-button class="new-btn" routerLink="/incidents/new">
-      <mat-icon>add</mat-icon>
-      Nova Ocorrência
-    </button>
-
     <ng-container *ngIf="currentUser; else anonLinks">
       <button mat-button [matMenuTriggerFor]="userMenu" class="user-btn">
         <mat-icon>account_circle</mat-icon>
