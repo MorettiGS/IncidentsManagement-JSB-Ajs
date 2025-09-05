@@ -10,7 +10,7 @@ import { Comment } from '../../../core/models/comment.model';
 })
 export class CommentFormComponent {
   @Input() incidentId: string | undefined;
-  @Output() commentAdded = new EventEmitter<Comment>();
+  @Output() commentCreated = new EventEmitter<Comment>();
   commentForm: FormGroup;
 
   constructor(
@@ -32,7 +32,7 @@ export class CommentFormComponent {
 
       this.commentService.addComment(this.incidentId, comment).subscribe({
         next: (newComment) => {
-          this.commentAdded.emit(newComment);
+          this.commentCreated.emit(newComment);
           this.commentForm.reset();
         },
         error: (error) => {
