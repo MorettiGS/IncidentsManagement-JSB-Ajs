@@ -18,6 +18,10 @@ const routes: Routes = [
     loadChildren: () => import('./features/stats/stats.module').then(m => m.StatsModule),
     canActivate: [AuthGuard]
   },
+  { path: 'profile',
+    loadChildren: () => import('./features/profile/profile.module').then(m => m.ProfileModule),
+    canActivate: [AuthGuard]
+  },
   { path: '**', redirectTo: '/incidents' }
 ];
 
