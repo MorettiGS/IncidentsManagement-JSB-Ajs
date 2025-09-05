@@ -1,78 +1,53 @@
-html, body { 
-  height: 100%; 
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+:root {
+  --card-radius: 8px;
+  --card-padding: 18px;
+  --surface-bg: #ffffff;
+  --muted: rgba(0,0,0,0.54);
 }
 
-body { 
-  margin: 0; 
-  font-family: Roboto, "Helvetica Neue", sans-serif; 
-  background-color: #f5f5f5;
+body {
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  background: #f6f6f7;
+  color: rgba(0,0,0,0.87);
+  margin: 0;
 }
 
-.mat-card {
-  margin-bottom: 16px;
+mat-card, .mat-card {
+  border-radius: var(--card-radius);
+  box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+  padding: var(--card-padding);
+  background: var(--surface-bg);
 }
 
-.text-center {
-  text-align: center;
+.section-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 12px;
 }
 
-.full-width {
-  width: 100%;
+.form-row {
+  display:flex;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.form-row .mat-form-field {
+  flex: 1 1 auto;
 }
 
-.mt-16 {
-  margin-top: 16px;
+.table-card {
+  overflow: auto;
+  padding: 8px 12px;
 }
 
-.mb-16 {
-  margin-bottom: 16px;
+.mat-header-cell {
+  font-weight: 600;
+  color: rgba(0,0,0,0.7);
 }
 
-.priority-badge {
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.priority-badge.alta {
-  background-color: #ffebee;
-  color: #c62828;
-}
-
-.priority-badge.media {
-  background-color: #fff8e1;
-  color: #f57f17;
-}
-
-.priority-badge.baixa {
-  background-color: #e8f5e8;
-  color: #2e7d32;
-}
-
-.status-badge {
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.status-badge.aberta {
-  background-color: #e3f2fd;
-  color: #1565c0;
-}
-
-.status-badge.em_andamento {
-  background-color: #fff8e1;
-  color: #f57f17;
-}
-
-.status-badge.resolvida {
-  background-color: #e8f5e8;
-  color: #2e7d32;
-}
-
-.status-badge.cancelada {
-  background-color: #f5f5f5;
-  color: #616161;
+@media (max-width: 900px) {
+  .form-row { flex-direction: column; }
+  .main-container { padding: 0 12px; }
+  .toolbar-links { gap: 4px; }
 }

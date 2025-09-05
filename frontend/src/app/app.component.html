@@ -1,12 +1,45 @@
-<mat-toolbar color="primary">
-  <span>Gestão de Ocorrências</span>
-  <span class="spacer"></span>
-  <button mat-button *ngIf="!authService.isAuthenticated()" routerLink="/login">Login</button>
-  <button mat-button *ngIf="!authService.isAuthenticated()" routerLink="/register">Registrar</button>
-  <button mat-button *ngIf="authService.isAuthenticated()" routerLink="/incidents">Ocorrências</button>
-  <button mat-button *ngIf="authService.isAuthenticated()" (click)="logout()">Logout</button>
+<mat-toolbar color="primary" class="app-toolbar" role="navigation">
+  <div class="toolbar-left" (click)="goHome()" role="button" tabindex="0">
+    <span class="app-title">{{ title }}</span>
+  </div>
+
+  <div class="toolbar-spacer"></div>
+
+  <nav class="toolbar-links" aria-label="Main navigation">
+    <button mat-button routerLink="/incidents" routerLinkActive="active">Incidentes</button>
+    <button mat-button routerLink="/stats" routerLinkActive="active">Estatísticas</button>
+
+    <button mat-stroked-button class="new-btn" routerLink="/incidents/new">
+      <mat-icon>add</mat-icon>
+      Nova Ocorrência
+    </button>
+
+    <ng-container *ngIf="currentUser; else anonLinks">
+      <button mat-button [matMenuTriggerFor]="userMenu" class="user-btn">
+        <mat-icon>account_circle</mat-icon>
+        {{ currentUser.email || currentUser.sub || 'Usuário' }}
+        <mat-icon>arrow_drop_down</mat-icon>
+      </button>
+
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item routerLink="/profile"><mat-icon>person</mat-icon> Perfil</button>
+        <button mat-menu-item routerLink="/auth/settings"><mat-icon>settings</mat-icon> Configurações</button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="logout()"><mat-icon>logout</mat-icon> Sair</button>
+      </mat-menu>
+    </ng-container>
+
+    <ng-template #anonLinks>
+      <button mat-button routerLink="/auth/login" routerLinkActive="active">Login</button>
+      <button mat-button routerLink="/auth/register" routerLinkActive="active">Registrar</button>
+    </ng-template>
+  </nav>
 </mat-toolbar>
 
-<main>
+<main class="main-container">
   <router-outlet></router-outlet>
 </main>
+
+<footer class="app-footer">
+  <div>© 2025 - Gestão de Ocorrências</div>
+</footer>

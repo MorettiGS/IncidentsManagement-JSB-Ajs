@@ -26,7 +26,7 @@ export class StatsComponent implements OnInit {
       timeout(5000),
       catchError((err) => {
         console.error('Stats load error', err);
-        this.error = 'Failed to load statistics. Try again later.';
+        this.error = 'Falha ao carregar estatísticas. Tente novamente mais tarde.';
         this.loading = false;
         return of(null);
       })

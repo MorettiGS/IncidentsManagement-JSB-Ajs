@@ -18,6 +18,17 @@
   margin-bottom: 20px;
 }
 
+.list-card {
+  margin-top: 18px;
+}
+
+.actions-row {
+  display:flex;
+  justify-content: space-between;
+  align-items:center;
+  margin-bottom: 8px;
+}
+
 .stat-card {
   text-align: center;
 }
