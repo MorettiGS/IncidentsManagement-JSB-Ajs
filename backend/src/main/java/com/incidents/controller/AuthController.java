@@ -5,6 +5,8 @@ import com.incidents.model.User;
 import com.incidents.repository.UserRepository;
 import com.incidents.security.JwtUtil;
 import com.incidents.security.UserDetailsServiceImpl;
+
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -46,6 +48,7 @@ public class AuthController {
     }
     
     @PostMapping("/login")
+    @Operation(summary = "Log in a user, generating JWT Token")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {
             log.info("POST /api/auth/login - attempt for email={}", loginRequest.getEmail());
@@ -65,6 +68,7 @@ public class AuthController {
     }
     
     @PostMapping("/register")
+    @Operation(summary = "Register a new user")
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest registerRequest) {
         log.info("POST /api/auth/register - Registration attempt for email: {}", registerRequest.getEmail());
         
@@ -103,6 +107,7 @@ public class AuthController {
     }
 
     @GetMapping("/me")
+    @Operation(summary = "Get a user and it's information")
     public ResponseEntity<?> getProfile() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || auth.getName() == null) {
@@ -125,6 +130,7 @@ public class AuthController {
     }
 
     @PutMapping("/me")
+    @Operation(summary = "Update a user's information")
     public ResponseEntity<?> updateProfile(@Valid @RequestBody UpdateProfileRequest request) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || auth.getName() == null) {
