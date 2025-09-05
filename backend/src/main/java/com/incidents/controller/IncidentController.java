@@ -1,6 +1,7 @@
 package com.incidents.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.extern.slf4j.Slf4j;
 import com.incidents.model.Incident;
 import com.incidents.model.Status;
 import com.incidents.service.IncidentService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/incidents")
 public class IncidentController {
@@ -28,18 +30,21 @@ public class IncidentController {
             @RequestParam(required = false) String prioridade,
             @RequestParam(required = false) String search,
             @ParameterObject Pageable pageable) {
+        log.info("GET /api/incidents - params status={}, prioridade={}, search={}, page={}", status, prioridade, search, pageable);
         return ResponseEntity.ok(incidentService.getIncidents(status, prioridade, search, pageable));
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Get incident by ID")
     public ResponseEntity<Incident> getIncident(@PathVariable UUID id) {
+        log.info("GET /api/incidents/{} - retrieving", id);
         return ResponseEntity.ok(incidentService.getIncident(id));
     }
 
     @PostMapping
     @Operation(summary = "Create a new incident")
     public ResponseEntity<Incident> createIncident(@RequestBody Incident incident) {
+        log.info("POST /api/incidents - creating incident for user={}", incident.getResponsavelEmail());
         return ResponseEntity.ok(incidentService.createIncident(incident));
     }
 

@@ -2,6 +2,7 @@ package com.incidents.controller;
 
 import com.incidents.service.IncidentService;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/stats")
 public class StatsController {
@@ -23,6 +25,8 @@ public class StatsController {
     @GetMapping("/incidents")
     @Operation(summary = "Get incident statistics")
     public ResponseEntity<Map<String, Object>> getStats() {
+        log.info("GET /api/stats/incidents - computing stats");
+
         List<Object[]> statusStats = incidentService.getStatsByStatus();
         List<Object[]> priorityStats = incidentService.getStatsByPrioridade();
 
