@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { StatsService } from '../../core/services/stats.service';
-import { IncidentStats } from '../../core/models/incident.model';
-import { timeout, catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-stats',
@@ -9,39 +7,69 @@ import { timeout, catchError, of } from 'rxjs';
   styleUrls: ['./stats.component.css']
 })
 export class StatsComponent implements OnInit {
-  stats: IncidentStats | null = null;
-  loading = true;
-  error = '';
+  loading = false;
+  error: string | null = null;
+  stats: { byStatus: Record<string, number>, byPriority: Record<string, number> } = { byStatus: {}, byPriority: {} };
+  total = 0;
 
   constructor(private statsService: StatsService) {}
 
   ngOnInit(): void {
-    this.loadStats();
+    this.load();
   }
 
-  loadStats(): void {
+  load(): void {
     this.loading = true;
-    this.error = '';
-    this.statsService.getIncidentStats().pipe(
-      timeout(5000),
-      catchError((err) => {
-        console.error('Stats load error', err);
-        this.error = 'Falha ao carregar estatísticas. Tente novamente mais tarde.';
+    this.error = null;
+    this.statsService.getIncidentStats().subscribe({
+      next: (res: any) => {
+        try {
+          const rawStatus = res?.byStatus ?? res?.status ?? res?.by_status ?? {};
+          const rawPriority = res?.byPriority ?? res?.priority ?? res?.by_priority ?? {};
+
+          const byStatus = this.toNumberMap(rawStatus);
+          const byPriority = this.toNumberMap(rawPriority);
+
+          this.stats = { byStatus, byPriority };
+
+          this.total = Object.values(byStatus).reduce((s, v) => s + v, 0);
+        } catch (e: any) {
+          console.error('Stats parsing error', e);
+          this.error = 'Erro ao processar estatísticas';
+        } finally {
+          this.loading = false;
+        }
+      },
+      error: (err: any) => {
+        console.error('Failed to load stats', err);
+        this.error = err?.error?.message ?? 'Falha ao carregar estatísticas';
         this.loading = false;
-        return of(null);
-      })
-    ).subscribe((res) => {
-      this.stats = res;
-      this.loading = false;
+      }
     });
   }
 
-  get total(): number {
-    if (!this.stats) return 0;
-    return Object.values(this.stats.byStatus || {}).reduce((a, b) => a + b, 0);
+  private toNumberMap(raw: any): Record<string, number> {
+    if (!raw || typeof raw !== 'object') return {};
+    const out: Record<string, number> = {};
+    Object.keys(raw).forEach(k => {
+      const v = raw[k];
+      let n = 0;
+      if (v == null) n = 0;
+      else if (typeof v === 'number') n = v;
+      else {
+        const parsed = Number(String(v));
+        n = Number.isFinite(parsed) ? parsed : 0;
+      }
+      out[k] = n;
+    });
+    return out;
   }
 
-  entries(obj: Record<string, number> | undefined): Array<[string, number]> {
-    return Object.entries(obj ?? {});
+  sortedEntries(map: Record<string, number>): [string, number][] {
+    return Object.entries(map || {}).sort((a, b) => b[1] - a[1]);
+  }
+
+  entries(map: Record<string, number>) {
+    return this.sortedEntries(map);
   }
 }

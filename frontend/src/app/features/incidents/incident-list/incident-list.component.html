@@ -6,15 +6,6 @@
     </button>
   </div>
 
-  <div class="stats-grid">
-    <mat-card *ngFor="let stat of stats.byStatus | keyvalue" class="stat-card">
-      <mat-card-header>
-        <mat-card-title>{{ stat.value }}</mat-card-title>
-        <mat-card-subtitle>{{ stat.key }}</mat-card-subtitle>
-      </mat-card-header>
-    </mat-card>
-  </div>
-
   <mat-card class="filters-card">
     <mat-card-header>
       <mat-card-title>Filtros</mat-card-title>
@@ -43,7 +34,7 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline" class="search-field">
             <mat-label>Buscar</mat-label>
             <input matInput formControlName="search" placeholder="Título ou descrição">
             <mat-icon matSuffix>search</mat-icon>
@@ -54,13 +45,26 @@
     </mat-card-content>
   </mat-card>
 
-  <mat-card>
+  <div *ngIf="(!incidents || incidents.length === 0)" class="empty-state-wrap">
+    <mat-card class="empty-card">
+      <mat-card-content>
+        <h3>Nenhuma ocorrência encontrada</h3>
+        <p>Não existem ocorrências com os filtros atuais.</p>
+        <div class="empty-actions">
+          <button mat-button (click)="filtersForm.reset(); onFilterChange()">
+            Limpar filtros
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <mat-card *ngIf="incidents && incidents.length > 0">
     <mat-card-header>
       <mat-card-title>Lista de Ocorrências</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <table mat-table [dataSource]="incidents" matSort (matSortChange)="onSortChange($event)" class="mat-elevation-z8">
-        
         <ng-container matColumnDef="titulo">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Título </th>
           <td mat-cell *matCellDef="let incident"> {{ incident.titulo }} </td>
