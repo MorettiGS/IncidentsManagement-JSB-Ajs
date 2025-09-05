@@ -20,8 +20,8 @@ services:
 
   backend:
     build:
-      context: .
-      dockerfile: backend/Dockerfile
+      context: ./backend
+      dockerfile: Dockerfile
     container_name: incidents_api
     restart: unless-stopped
     environment:
@@ -38,16 +38,16 @@ services:
     ports:
       - "${SERVER_PORT}:${SERVER_PORT}"
 
-	frontend:
-      build:
-        context: .
-        dockerfile: frontend/Dockerfile
-      container_name: incidents_web
-      restart: unless-stopped
-      depends_on:
-        - backend
-      ports:
-        - "4200:80"
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: incidents_web
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "4200:80"
 
 volumes:
   db_data:
