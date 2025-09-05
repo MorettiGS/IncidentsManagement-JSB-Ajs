@@ -94,10 +94,15 @@ public class AuthController {
     }
     
     private boolean isValidPassword(String password) {
-        // At least 8 characters, one number, one uppercase, one special character
-        String pattern = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$";
-        return password != null && password.matches(pattern);
-    }
+    if (password == null) return false;
+
+    // At least 8 characters, at least one digit, at least one uppercase,
+    // at least one special character,
+    // and no whitespace characters allowed overall.
+    String pattern = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[^A-Za-z0-9\\s])(?=\\S+$).{8,}$";
+
+    return password.matches(pattern);
+}
 
     public static class LoginRequest {
         private String email;
