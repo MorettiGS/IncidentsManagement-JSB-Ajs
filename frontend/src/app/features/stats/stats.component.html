@@ -1,0 +1,50 @@
+<div class="stats-root">
+  <ng-container *ngIf="loading">
+    <div class="spinner-wrap">
+      <mat-spinner diameter="48"></mat-spinner>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="!loading && error">
+    <mat-card class="error-card">
+      <mat-card-content>{{ error }}</mat-card-content>
+    </mat-card>
+  </ng-container>
+
+  <ng-container *ngIf="!loading && stats">
+    <div class="cards">
+      <mat-card class="stat-card">
+        <mat-card-title>Total</mat-card-title>
+        <mat-card-content>
+          <div class="big-number">{{ total }}</div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="stat-card">
+        <mat-card-title>By status</mat-card-title>
+        <mat-card-content>
+          <mat-list>
+            <mat-list-item *ngFor="let kv of entries(stats.byStatus)">
+              <span class="list-key">{{ kv[0] }}</span>
+              <span class="spacer"></span>
+              <span class="list-val">{{ kv[1] }}</span>
+            </mat-list-item>
+          </mat-list>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="stat-card">
+        <mat-card-title>By priority</mat-card-title>
+        <mat-card-content>
+          <mat-list>
+            <mat-list-item *ngFor="let kv of entries(stats.byPriority)">
+              <span class="list-key">{{ kv[0] }}</span>
+              <span class="spacer"></span>
+              <span class="list-val">{{ kv[1] }}</span>
+            </mat-list-item>
+          </mat-list>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </ng-container>
+</div>
