@@ -69,9 +69,14 @@ export class IncidentFormComponent implements OnInit {
   onSubmit(): void {
     if (this.incidentForm.valid) {
       const formValue = this.incidentForm.value;
+      const tagsArr = (formValue.tags || '')
+        .split(',')
+        .map((t: string) => t.trim())
+        .filter((t: string) => t);
+
       const incident: Incident = {
         ...formValue,
-        tags: formValue.tags.split(',').map((tag: string) => tag.trim()).filter((tag: string) => tag)
+        tags: tagsArr
       };
 
       const operation = this.isEditMode

@@ -9,12 +9,7 @@ import { IncidentFormComponent } from './incident-form/incident-form.component';
 import { CommentListComponent } from './comment-list/comment-list.component';
 import { CommentFormComponent } from './comment-form/comment-form.component';
 import { MaterialModule } from '../../shared/material.module';
-
-const routes: Routes = [
-  { path: '', component: IncidentListComponent },
-  { path: 'new', component: IncidentFormComponent },
-  { path: ':id', component: IncidentDetailComponent }
-];
+import { IncidentsRoutingModule } from './incidents-routing.module';
 
 @NgModule({
   declarations: [
@@ -28,7 +23,7 @@ const routes: Routes = [
     CommonModule,
     ReactiveFormsModule,
     MaterialModule,
-    RouterModule.forChild(routes)
+    IncidentsRoutingModule
   ]
 })
 export class IncidentsModule {}

@@ -22,7 +22,6 @@ public class QueryBuilder {
                     Status statusEnum = Status.valueOf(status.toUpperCase());
                     predicates.add(criteriaBuilder.equal(root.get("status"), statusEnum));
                 } catch (IllegalArgumentException e) {
-                    // Ignore invalid status values
                 }
             }
             
@@ -31,7 +30,6 @@ public class QueryBuilder {
                     Prioridade prioridadeEnum = Prioridade.valueOf(prioridade.toUpperCase());
                     predicates.add(criteriaBuilder.equal(root.get("prioridade"), prioridadeEnum));
                 } catch (IllegalArgumentException e) {
-                    // Ignore invalid priority values
                 }
             }
             
